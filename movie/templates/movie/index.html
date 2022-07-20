@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% comment %}
+<!DOCTYPE html>
+<html>
+  <h1>List movies in database</h1>
+  {% for movie in movies %}
+  <p>{{movie.movie_name}} (id = {{movie.id}})</p>
+  {% endfor %}
+  <h1>Show Image!</h1>
+  {% load static %}
+  <img src="{% static 'movie/img/TopGun.jpeg' %}" alt="TopGun" width="800px" />
+  <form method="post" action="post_movie_name">
+    {% csrf_token %}
+    <input type="text" name="movie name" />
+    <input type="submit" />
+  </form>
+</html>
+{% endcomment %}
+{% block content %}
+
+
+
+{% endblock %}
