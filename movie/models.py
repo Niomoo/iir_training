@@ -12,8 +12,9 @@ class User(models.Model):
 class Movie(models.Model):
     id = models.AutoField(primary_key=True)
     movie_name = models.CharField(max_length=50)
+    description = models.TextField(blank=True)
     published_year = models.DateField(blank=True)
-    movie_poster = models.CharField(max_length=50, blank=True)
+    movie_poster = models.CharField(max_length=100, blank=True)
 
 class Rating(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)

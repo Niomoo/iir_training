@@ -16,7 +16,29 @@
 </html>
 {% endcomment %}
 {% block content %}
-
-
+<div class="jumbotron jumbotron-fluid pb-2">
+  <div class="container">
+    <h1 class="display-3">{{ name }}</h1>
+    <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+    {% comment %} <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>  {% endcomment %}
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+      {% for movie in movies %}
+      <div class="col-md-4" style="width: 18rem;">
+              {% comment %} <div class="card-body">
+                  <h5 class="card-title">{{ movie.id }}</h5>
+                  <p class="card-text">{{ movie.movie_name }} . . .</p>
+                  <a class="btn btn-primary" href="{{ movie.movie_name }}">內容</a>
+              </div> {% endcomment %}
+            <h2>{{ movie.movie_name }}</h2>
+            <p>{{ movie.movie_name }}...</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+      </div>
+      {% endfor %}
+  </div>
+</div>
+<hr>
 
 {% endblock %}

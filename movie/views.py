@@ -1,12 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from movie.models import Movie
+from movie.models import Movie, User, Rating
 import requests
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'movie/index.html')
+    all_movies = Movie.objects.all()
+    return render(request, 'movie/index.html', {
+        'movies': all_movies,
+        'name': "Movie Ranking",
+    })
 
 def get_movie_name(request, movie_name):
     return HttpResponse("Get movie name: " + movie_name)
@@ -24,7 +28,10 @@ def get_all_data(request):
     all_movies = Movie.objects.all()
     # for movie in all_movies:
     #     print(movie.movie_name)
-    return render(request, 'movie/index.html', {'movies': all_movies})
+    return render(request, 'movie/MovieList.html', {
+        'movies': all_movies,
+        'name': "Movie List",
+    })
 
 def post_movie_name(request):
     if request.method == 'POST':
@@ -36,3 +43,24 @@ def post_movie_name(request):
         m = Movie(movie_name=add)
         m.save()
     return render(request, 'movie/index.html')
+
+def signup(request):
+    return render(request, 'movie/SignUp.html', {
+        'name': "Register"
+    })
+
+def post_signup(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        age = request.POST['age']
+        all_users = User.objects.all()
+        for user in all_users:
+            if username == user.user_name:
+                return HttpResponse(username + " is already in database now!")
+        user = User.objects.create(username, age)
+        if user:
+            return redirect("/", locals())
+        else:
+            return redirect("movie/index.html", locals(), {
+                'name': "User"
+            })
