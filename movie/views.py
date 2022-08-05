@@ -26,8 +26,6 @@ def save_data_into_db(request, movie_name):
 
 def get_all_data(request):
     all_movies = Movie.objects.all()
-    # for movie in all_movies:
-    #     print(movie.movie_name)
     return render(request, 'movie/MovieList.html', {
         'movies': all_movies,
         'name': "Movie List",
@@ -45,7 +43,7 @@ def post_movie_name(request):
     return render(request, 'movie/index.html')
 
 def signup(request):
-    return render(request, 'movie/SignUp.html', {
+    return render(request, 'movie/Register.html', {
         'name': "Register"
     })
 
@@ -63,9 +61,42 @@ def post_signup(request):
             'name': "User"
         })
 
+def post_rating(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        movie_name = request.POST['movie']
+        rating = request.POST['rating']
+        user = User.objects.get(name=username)
+        movie = Movie.objects.get(movie_name=movie_name)
+        r = Rating(user_id=user.id, movie_id=movie, rating=rating)
+        r.save()
+        all_rates = Rating.objects.all()
+        return redirect("/movie/home/get_all_rating", {
+            'rates': all_rates,
+            'name': "Rating List",
+        })
+
 def get_all_users(request):
     all_users = User.objects.all()
     return render(request, 'movie/UserList.html', {
         'users': all_users,
         'name': "User List",
+    })
+
+def get_all_rating(request):
+    all_rates = Rating.objects.all()
+    for rate in all_rates:
+        rate.movie = Movie.objects.get(rate.movie_id).movie_name
+        rate.user = User.objects.get(rate.user_id).user_name
+    return render(request, 'movie/RatingList.html', {
+        'rates': all_rates,
+        'name': "Rating List",
+    })
+
+def new_rating(request, user_name):
+    all_movies = Movie.objects.all()
+    return render(request, 'movie/NewRating.html', {
+        'movies': all_movies,
+        'name': "New Rating",
+        'user_name': user_name,
     })

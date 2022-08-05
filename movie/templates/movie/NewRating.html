@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid pb-2">
+  <div class="container">
+    <h1 class="display-3">{{ name }}</h1>
+  </div>
+</div>
+<div class="container">
+  <form method="post" action="post_rating" class="align-items-center align-middle">
+    <div class="row mb-3">
+      <label class="col-sm-2 col-form-label">Name</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="username" placeholder={{ user_name }} aria-label="Disabled input example" disabled>
+      </div>
+    </div>
+    <div class="row mb-3 align-items-center">
+      <label class="col-sm-2 col-form-label">Select the movie</label>
+      <div class="col-sm-10">
+        <select class="form-select" aria-label="Default select example">
+          <option selected disabled>---Select---</option>
+          {% for movie in movies %}
+            <option name="movie" value={{movie.id}}>{{ movie.movie_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row mb-3 align-items-center">
+      <label class="col-sm-2 col-form-label">Select the rating</label>
+      <div class="col-sm-10">
+        <input type="range" class="form-range" name="rating" min="0" max="5" value="0" step="1" oninput="this.nextElementSibling.value = this.value">
+        <output>0</output>
+      </div>
+    </div>
+    {% csrf_token %}
+    <div class="col">
+      <button class="btn btn-primary btn-block">Submit</button>
+    </div>
+  </form>
+
+</div>
+<hr>
+
+{% endblock %}

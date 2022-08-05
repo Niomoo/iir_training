@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid pb-2">
+  <div class="container">
+    <h1 class="display-3">{{ name }}</h1>
+    <p>此頁為所有評價的列表，歡迎新增評價。</p>
+    {% comment %} <p><a class="btn btn-primary btn-lg" href="" role="button">New Rating »</a></p>  {% endcomment %}
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <table class="table table-hover">
+      <thead>
+        <tr align="center">
+          <th scope="col">Movie</th>
+          <th scope="col">User</th>
+          <th scope="col">Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for rate in rates %}
+          <tr class="p-2" align="center">
+            <th class="align-middle">{{ rate.movie }}</th>
+            <td class="align-middle">{{ rate.user }}</td>
+            <td class="align-middle">{{ rate.rating }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+<hr>
+
+{% endblock %}

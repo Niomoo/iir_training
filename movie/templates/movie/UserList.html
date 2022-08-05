@@ -24,7 +24,7 @@
             <th class="align-middle">{{ user.id }}</th>
             <td class="align-middle">{{ user.user_name }}</td>
             <td class="align-middle">{{ user.user_age }}</td>
-            <td><a class="btn btn-success btn-sm" href="#" role="button">New Rating »</a></td>
+            <td><a class="btn btn-success btn-sm" href="new_rating/{{ user.user_name }}" role="button">New Rating »</a></td>
           </tr>
           {% endfor %}
         </tbody>
