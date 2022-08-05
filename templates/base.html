@@ -20,11 +20,11 @@
             <a class="nav-link" href="index">Home<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Movie List</a>
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Movie Ranking</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="get_all_data">Movie Ranking</a>
-              <a class="dropdown-item" href="#">User List</a>
-              <a class="dropdown-item" href="#">Upload Rating</a>
+              <a class="dropdown-item" href="get_all_data">Movie List</a>
+              <a class="dropdown-item" href="get_all_users">User List</a>
+              <a class="dropdown-item" href="#">Rating List</a>
             </div>
           </li>
           <li class="nav-item">
@@ -34,22 +34,23 @@
             <a class="nav-link" href="#">Disabled</a>
           </li>
         </ul>
-        {% if user.is_authenticated %}
+        {% comment %} {% if user.is_authenticated %}
         <ul class="nav navbar navbar-right">
           <li class="auth pr-3">Hi, {{ user.user_name }}</li> 
           <li class="auth pr-3"><button class="btn btn-success" type="submit">New Rating</button></li> 
-          <li class="auth mr-0"><a href="signup"><button class="btn btn-primary" type="button">Log out</button></a></li>
+          <li class="auth mr-0"><button class="btn btn-primary" type="button" onclick="logout">Log out</button></li>
+          {% csrf_token %}
         </ul>
         {% else %}
         <form class="row justify-content-end">
-          {% comment %} <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> {% endcomment %}
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> 
           <div class="col-3 ml-auto pr-0"><input class="form-control" type="text" placeholder="Name" ></div>
           <div class="col-2 pr-0"><input class="form-control" type="password" placeholder="Age" ></div> 
           <div class="col-auto pr-0"><button class="btn btn-success" type="submit">Sign in</button></div> 
           <div class="col-auto mr-0"><a href="signup"><button class="btn btn-primary" type="button">Register</button></a></div>
         </form>
-        {% endif %}
+        {% endif %}{% endcomment %}
       </div>
     </nav>
 

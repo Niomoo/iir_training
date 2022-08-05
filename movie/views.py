@@ -56,11 +56,16 @@ def post_signup(request):
         all_users = User.objects.all()
         for user in all_users:
             if username == user.user_name:
-                return HttpResponse(username + " is already in database now!")
-        user = User.objects.create(username, age)
-        if user:
-            return redirect("/", locals())
-        else:
-            return redirect("movie/index.html", locals(), {
-                'name': "User"
-            })
+                return redirect('/movie/home/signup', locals())
+        u = User(user_name=username, user_age=age)
+        u.save()
+        return redirect("/movie/home/get_all_users", locals(), {
+            'name': "User"
+        })
+
+def get_all_users(request):
+    all_users = User.objects.all()
+    return render(request, 'movie/UserList.html', {
+        'users': all_users,
+        'name': "User List",
+    })

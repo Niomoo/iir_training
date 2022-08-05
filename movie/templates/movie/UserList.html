@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid pb-2">
+  <div class="container">
+    <h1 class="display-3">{{ name }}</h1>
+    <p>此頁為所有使用者的列表，歡迎新增使用者。</p>
+    <p><a class="btn btn-primary btn-lg" href="signup" role="button">New Account »</a></p> 
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <table class="table table-hover">
+      <thead>
+        <tr align="center">
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Age</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for user in users %}
+          <tr class="p-2" align="center">
+            <th class="align-middle">{{ user.id }}</th>
+            <td class="align-middle">{{ user.user_name }}</td>
+            <td class="align-middle">{{ user.user_age }}</td>
+            <td><a class="btn btn-success btn-sm" href="#" role="button">New Rating »</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+<hr>
+
+{% endblock %}
