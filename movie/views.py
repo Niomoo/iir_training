@@ -32,11 +32,23 @@ def get_all_data(request):
     })
 
 def new_movie(request):
-    return render(request, 'movie/MovieList.html', {
-        'movies': all_movies,
-        'name': "Movie List",
+    return render(request, 'movie/NewMovie.html', {
+        'name': "New Movie",
     })
 
+def post_movie(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        age = request.POST['age']
+        all_users = User.objects.all()
+        for user in all_users:
+            if username == user.user_name:
+                return redirect('/movie/home/signup', locals())
+        u = User(user_name=username, user_age=age)
+        u.save()
+        return redirect("/movie/home/get_all_users", locals(), {
+            'name': "User"
+        })
 # def post_movie_name(request):
 #     if request.method == 'POST':
 #         add = request.POST['movie name']
@@ -112,4 +124,3 @@ def post_rating(request):
             'rates': all_rates,
             'name': "Rating List"
         })
-

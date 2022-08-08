@@ -8,8 +8,19 @@
 <div class="container">
   <form method="post" action={% url 'post_rating' %} class="align-items-center align-middle">
     <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Name</label>
-      {% if user_name == 'none' %}
+      <label class="col-sm-2 col-form-label">Movie Name</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="movie_name">
+      </div>
+    </div>
+    <div class="row mb-3 align-items-center">
+      <label class="col-sm-2 col-form-label">Description</label>
+      <div class="col-sm-10">
+        <textarea class="form-control" name="description" rows="5"></textarea>
+      </div>
+    </div>
+    <div class="row mb-3 align-items-center">
+      <label class="col-sm-2 col-form-label">Select the rating</label>
       <div class="col-sm-10">
         <select class="form-select" aria-label="Default select example" name="username">
           <option selected disabled>---Select---</option>
@@ -17,29 +28,6 @@
             <option value={{ user.user_name }}>{{ user.user_name }}</option>
           {% endfor %}
         </select>
-      </div>
-      {% else %}
-      <div class="col-sm-10">
-        <input class="form-control" type="text" name="username" value={{ user_name }} placeholder={{ user_name }} aria-label="Disabled input example" readonly>
-      </div>
-      {% endif %}
-    </div>
-    <div class="row mb-3 align-items-center">
-      <label class="col-sm-2 col-form-label">Select the movie</label>
-      <div class="col-sm-10">
-        <select class="form-select" aria-label="Default select example" name="movie">
-          <option selected disabled>---Select---</option>
-          {% for movie in movies %}
-            <option value={{ movie.id }}>{{ movie.movie_name }}</option>
-          {% endfor %}
-        </select>
-      </div>
-    </div>
-    <div class="row mb-3 align-items-center">
-      <label class="col-sm-2 col-form-label">Select the rating</label>
-      <div class="col-sm-10">
-        <input type="range" class="form-range" name="rating" min="0" max="5" value="0" step="1" oninput="this.nextElementSibling.value = this.value">
-        <output>0</output>
       </div>
     </div>
     <div class="col">
