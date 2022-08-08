@@ -61,21 +61,6 @@ def post_signup(request):
             'name': "User"
         })
 
-def post_rating(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        movie_name = request.POST['movie']
-        rating = request.POST['rating']
-        user = User.objects.get(name=username)
-        movie = Movie.objects.get(movie_name=movie_name)
-        r = Rating(user_id=user.id, movie_id=movie, rating=rating)
-        r.save()
-        all_rates = Rating.objects.all()
-        return redirect("/movie/home/get_all_rating", {
-            'rates': all_rates,
-            'name': "Rating List",
-        })
-
 def get_all_users(request):
     all_users = User.objects.all()
     return render(request, 'movie/UserList.html', {
@@ -85,18 +70,39 @@ def get_all_users(request):
 
 def get_all_rating(request):
     all_rates = Rating.objects.all()
+    rates = []
     for rate in all_rates:
-        rate.movie = Movie.objects.get(rate.movie_id).movie_name
-        rate.user = User.objects.get(rate.user_id).user_name
+        rating = rate.rating
+        movie = Movie.objects.get(id=rate.movie.id).movie_name
+        user = User.objects.get(id=rate.user.id).user_name
+        rates.append({'movie': movie, 'user': user, 'rating': rating})
     return render(request, 'movie/RatingList.html', {
-        'rates': all_rates,
+        'rates': rates,
         'name': "Rating List",
     })
 
 def new_rating(request, user_name):
     all_movies = Movie.objects.all()
+    all_users = User.objects.all()
     return render(request, 'movie/NewRating.html', {
         'movies': all_movies,
+        'users': all_users,
         'name': "New Rating",
         'user_name': user_name,
     })
+
+def post_rating(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        movie_id = request.POST['movie']
+        rating = request.POST['rating']
+        print(username, movie_id, rating)
+        user = User.objects.get(user_name=username)
+        movie = Movie.objects.get(id=movie_id)
+        r = Rating(user=user, movie=movie, rating=rating)
+        r.save()
+        all_rates = Rating.objects.all()
+        return redirect("/movie/home/get_all_rating", {
+            'rates': all_rates,
+            'name': "Rating List"
+        })

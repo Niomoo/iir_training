@@ -8,6 +8,9 @@ class MovieAdmin(admin.ModelAdmin):
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id','user_name')
 
+class RatingAdmin(admin.ModelAdmin):
+    list_display = ('movie_id', 'user_id', 'rating')
+
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(User, UserAdmin)
-admin.site.register(Rating)
+admin.site.register(Rating, RatingAdmin)

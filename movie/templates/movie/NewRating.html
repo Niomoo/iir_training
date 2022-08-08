@@ -6,20 +6,31 @@
   </div>
 </div>
 <div class="container">
-  <form method="post" action="post_rating" class="align-items-center align-middle">
+  <form method="post" action={% url 'post_rating' %} class="align-items-center align-middle">
     <div class="row mb-3">
       <label class="col-sm-2 col-form-label">Name</label>
+      {% if user_name == 'none' %}
       <div class="col-sm-10">
-        <input class="form-control" type="text" name="username" placeholder={{ user_name }} aria-label="Disabled input example" disabled>
+        <select class="form-select" aria-label="Default select example" name="username">
+          <option selected disabled>---Select---</option>
+          {% for user in users %}
+            <option value={{ user.user_name }}>{{ user.user_name }}</option>
+          {% endfor %}
+        </select>
       </div>
+      {% else %}
+      <div class="col-sm-10">
+        <input class="form-control" type="text" name="username" value={{ user_name }} placeholder={{ user_name }} aria-label="Disabled input example" readonly>
+      </div>
+      {% endif %}
     </div>
     <div class="row mb-3 align-items-center">
       <label class="col-sm-2 col-form-label">Select the movie</label>
       <div class="col-sm-10">
-        <select class="form-select" aria-label="Default select example">
+        <select class="form-select" aria-label="Default select example" name="movie">
           <option selected disabled>---Select---</option>
           {% for movie in movies %}
-            <option name="movie" value={{movie.id}}>{{ movie.movie_name }}</option>
+            <option value={{ movie.id }}>{{ movie.movie_name }}</option>
           {% endfor %}
         </select>
       </div>
@@ -31,8 +42,8 @@
         <output>0</output>
       </div>
     </div>
-    {% csrf_token %}
     <div class="col">
+      {% csrf_token %}
       <button class="btn btn-primary btn-block">Submit</button>
     </div>
   </form>

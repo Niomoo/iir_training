@@ -10,6 +10,6 @@ urlpatterns = [
     path('home/get_all_rating', views.get_all_rating, name='get_all_rating'),
     path('home/post_signup', views.post_signup, name='post_signup'),
     path('home/post_rating', views.post_rating, name='post_rating'),
-    path('home/new_rating/<str:user_name>', views.new_rating, name='new_rating'),
+    path('home/new_rating/<str:user_name>/', views.new_rating, name='new_rating'),
     path('home/signup', views.signup, name='signup'),
 ]

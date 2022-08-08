@@ -17,6 +17,6 @@ class Movie(models.Model):
     movie_poster = models.CharField(max_length=100, blank=True)
 
 class Rating(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     rating = models.IntegerField()
