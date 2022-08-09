@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid pb-2">
+  <div class="container">
+    <h1 class="display-3">{{ name }}</h1>
+    <p>此頁為電影的詳細資訊，歡迎進行修改。</p>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <img src="../../..{{ MEDIA_URL }}{{ movie.movie_poster }}" alt="Poster" class="img-fluid"/>
+    </div>
+    <div class="col-9">
+      <form method="post" action={% url 'update_movie' id=movie.id %} class="align-items-center align-middle" enctype="multipart/form-data">
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Movie name</label>
+          <div class="col-sm-10">
+            <input class="form-control"  type="text" name="movie_name" value='{{ movie.movie_name }}' readonly />
+          </div>
+        </div>
+        <div class="row mb-3 align-items-center">
+          <label class="col-sm-2 col-form-label">Description</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" name="description" rows="5">{{ movie.description }}</textarea>
+          </div>
+        </div>
+        <div class="row mb-3 align-items-center">
+          <label class="col-sm-2 col-form-label">Published year</label>
+          <div class="col-sm-10">
+            <select class="form-select" aria-label="Default select example" name="published_year">
+              <option selected>{{ movie.published_year }}</option>
+              {% for y in years %}
+                <option value={{ y }}>{{ y }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        {% comment %} <div class="row mb-3 align-items-center">
+          <label for="formFile" class="col-sm-2 form-label">Movie poster</label>
+          <div class="col-sm-10">
+            <input class="form-control" type="file" id="formFile" name="file">
+          </div>
+        </div> {% endcomment %}
+        <div class="col">
+          {% csrf_token %}
+          <button class="btn btn-primary btn-block">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<hr>
+{% endblock %}

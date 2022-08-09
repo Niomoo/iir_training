@@ -12,13 +12,14 @@ class User(models.Model):
 
 year_dropdown = []
 for year in range(1896, (datetime.datetime.now().year)):
-    year_dropdown.append(year)
+    year_dropdown.append((year, year))
+
 class Movie(models.Model):
     id = models.AutoField(primary_key=True)
     movie_name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
-    published_year = models.IntegerField(max_length=4, choices=year_dropdown, default=datetime.datetime.now().year)
-    movie_poster = models.CharField(max_length=100, blank=True)
+    published_year = models.IntegerField(('year'), choices=year_dropdown, default=datetime.datetime.now().year+1)
+    movie_poster = models.FileField(upload_to='img/', blank=True)
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

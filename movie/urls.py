@@ -1,5 +1,8 @@
 from django.urls import path
 from movie import views
+from django.views.static import serve
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('home/index', views.index, name='index'),
@@ -14,4 +17,6 @@ urlpatterns = [
     path('home/new_movie', views.new_movie, name='new_movie'),
     path('home/signup', views.signup, name='signup'),
     path('home/new_rating/<str:user_name>/', views.new_rating, name='new_rating'),
-]
+    path('home/get_movie_detail/<int:id>/', views.get_movie_detail, name='get_movie_detail'),
+    path('home/update_movie/<int:id>/', views.update_movie, name='update_movie'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

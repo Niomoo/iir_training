@@ -1,7 +1,9 @@
+from re import M
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from movie.models import Movie, User, Rating
 import requests
+import datetime
 
 # Create your views here.
 
@@ -34,21 +36,52 @@ def get_all_data(request):
 def new_movie(request):
     return render(request, 'movie/NewMovie.html', {
         'name': "New Movie",
+        'years': range(1896, datetime.datetime.now().year+1)
     })
 
 def post_movie(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        age = request.POST['age']
-        all_users = User.objects.all()
-        for user in all_users:
-            if username == user.user_name:
-                return redirect('/movie/home/signup', locals())
-        u = User(user_name=username, user_age=age)
-        u.save()
-        return redirect("/movie/home/get_all_users", locals(), {
-            'name': "User"
+        movie_name = request.POST['movie_name']
+        description = request.POST['description']
+        published_year = request.POST['published_year']
+        file = request.FILES['file']
+        all_movies = Movie.objects.all()
+        for movie in all_movies:
+            if movie_name == movie.movie_name:
+                return redirect('/movie/home/get_all_data', locals())
+        m = Movie(movie_name=movie_name, description=description, published_year=published_year, movie_poster=file)
+        m.save()
+        return redirect("/movie/home/get_all_data", locals(), {
+            'movies': all_movies,
+            'name': "Movie List"
         })
+
+def get_movie_detail(request, id):
+    movie = Movie.objects.get(id=id)
+    return render(request, 'movie/MovieDetail.html', {
+        'movie': movie,
+        'years': range(1896, datetime.datetime.now().year+1),
+        'name': "Movie Detail",
+    })
+
+def update_movie(request, id):
+    if request.method == 'POST':
+        movie_name = request.POST['movie_name']
+        description = request.POST['description']
+        published_year = request.POST['published_year']
+        file = request.FILES['file']
+        m = Movie.objects.get(id=id)
+        m.movie_name=movie_name
+        m.description=description
+        m.published_year=published_year
+        m.movie_poster=file
+        m.save()
+        all_movies = Movie.objects.all()
+        return redirect("/movie/home/get_all_data", locals(), {
+            'movies': all_movies,
+            'name': "Movie List"
+        })
+
 # def post_movie_name(request):
 #     if request.method == 'POST':
 #         add = request.POST['movie name']
