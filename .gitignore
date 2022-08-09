@@ -1,1 +1,3 @@
 django_practice/settings.py
+django_practice/__pycache__
+movie/__pycache__

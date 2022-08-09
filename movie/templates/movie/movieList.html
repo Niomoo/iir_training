@@ -1,31 +1,63 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <div class="jumbotron jumbotron-fluid pb-2">
   <div class="container">
     <h1 class="display-3">{{ name }}</h1>
     <p>此頁為所有電影的列表，歡迎新增電影或針對個別內容修改。</p>
-    <p><a class="btn btn-primary btn-lg" href="new_movie" role="button">New Movie »</a></p> 
+    <p>
+      <a class="btn btn-primary btn-lg" href="new_movie" role="button"
+        >New Movie »</a
+      >
+    </p>
   </div>
 </div>
 <div class="container">
   <div class="row">
-      {% for movie in movies %}
-      <div class="col-md-4" style="width: 20rem;">
-              {% comment %} <div class="card-body">
-                  <h5 class="card-title">{{ movie.id }}</h5>
-                  <p class="card-text">{{ movie.movie_name }} . . .</p>
-                  <a class="btn btn-primary" href="{{ movie.movie_name }}">內容</a>
-              </div> {% endcomment %}
-            <h3>{{ movie.movie_name }}</h3>
-            <img src="..{{ MEDIA_URL }}{{ movie.movie_poster }}" alt="Poster" height="400" width="280"/>
-            <div class="mt-2">
-              <p style="overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;line-height: 24px; height: 72px;">{{ movie.description }}</p>
-            </div>
-            <div class="text-right mb-2"><a class="btn btn-secondary" href="get_movie_detail/{{ movie.id }}" role="button">View details »</a></div>
+    {% for movie in movies %}
+    <div class="col-md-4" style="width: 20rem">
+      <h3>{{ movie.movie_name }}</h3>
+      <img
+        src="..{{ MEDIA_URL }}{{ movie.movie_poster }}"
+        alt="Poster"
+        width="100%" height="450"
+      />
+      <div class="my-2">
+        <p
+          style="
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            line-height: 24px;
+            height: 72px;
+            margin-bottom: 0;
+          "
+        >
+          {{ movie.description }}
+        </p>
       </div>
-      {% endfor %}
+      <div class="mt-1">平均得分：{{ movie.rating }} / 5 分</div>
+      <div class="row my-2">
+        <div class="col">
+        <a
+          class="btn btn-success"
+          href="update_movie_detail/{{ movie.id }}"
+          role="button"
+          >Update movie »</a
+        >
+        </div>
+        <div class="col text-right">
+        <a
+          class="btn btn-info"
+          href="get_movie_detail/{{ movie.id }}"
+          role="button"
+          >View details »</a
+        >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
   </div>
 </div>
-<hr>
+<hr />
 
 {% endblock %}

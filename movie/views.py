@@ -2,6 +2,7 @@ from re import M
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from movie.models import Movie, User, Rating
+from django.db.models import Avg
 import requests
 import datetime
 
@@ -28,8 +29,23 @@ def index(request):
 
 def get_all_data(request):
     all_movies = Movie.objects.all()
+    movies = []
+    for movie in all_movies:
+        rate = Rating.objects.filter(movie_id=movie.id)
+        rate_avg = rate.aggregate(Avg('rating'))['rating__avg']
+        if rate_avg != None:
+            rate_avg = round(rate_avg, 1)
+        else:
+            rate_avg = '--'
+        movies.append({
+            'id': movie.id,
+            'movie_name': movie.movie_name, 
+            'description': movie.description,
+            'movie_poster': movie.movie_poster,
+            'rating': rate_avg,
+        })
     return render(request, 'movie/MovieList.html', {
-        'movies': all_movies,
+        'movies': movies,
         'name': "Movie List",
     })
 
@@ -64,23 +80,40 @@ def get_movie_detail(request, id):
         'name': "Movie Detail",
     })
 
+def update_movie_detail(request, id):
+    movie = Movie.objects.get(id=id)
+    return render(request, 'movie/ModifyMovie.html', {
+        'movie': movie,
+        'years': range(1896, datetime.datetime.now().year+1),
+        'name': "Modify Movie",
+    })
+
 def update_movie(request, id):
     if request.method == 'POST':
         movie_name = request.POST['movie_name']
         description = request.POST['description']
         published_year = request.POST['published_year']
-        file = request.FILES['file']
+        # file = request.FILES['file']
         m = Movie.objects.get(id=id)
         m.movie_name=movie_name
         m.description=description
         m.published_year=published_year
-        m.movie_poster=file
+        # m.movie_poster=file
         m.save()
         all_movies = Movie.objects.all()
         return redirect("/movie/home/get_all_data", locals(), {
             'movies': all_movies,
             'name': "Movie List"
         })
+
+def delete_movie(request, id):
+    m = Movie.objects.get(id=id)
+    m.delete()
+    all_movies = Movie.objects.all()
+    return redirect("/movie/home/get_all_data", locals(), {
+        'movies': all_movies,
+        'name': "Movie List"
+    })
 
 # def post_movie_name(request):
 #     if request.method == 'POST':
@@ -116,8 +149,17 @@ def post_signup(request):
         u = User(user_name=username, user_age=age)
         u.save()
         return redirect("/movie/home/get_all_users", locals(), {
-            'name': "User"
+            'name': "User List"
         })
+
+def delete_user(request, user_name):
+    u = User.objects.get(user_name=user_name)
+    u.delete()
+    all_users = User.objects.all()
+    return redirect("/movie/home/get_all_users", locals(), {
+        'user': all_users,
+        'name': "User List"
+    })
 
 def get_all_rating(request):
     all_rates = Rating.objects.all()
@@ -157,3 +199,14 @@ def post_rating(request):
             'rates': all_rates,
             'name': "Rating List"
         })
+
+def delete_rating(request, user, movie):
+    user_id = User.objects.get(user_name=user).id
+    movie_id = Movie.objects.get(movie_name = movie).id
+    r = Rating.objects.get(user_id=user_id, movie_id=movie_id)
+    r.delete()
+    all_rates = Rating.objects.all()
+    return redirect("/movie/home/get_all_rating", {
+        'rates': all_rates,
+        'name': "Rating List"
+    })
