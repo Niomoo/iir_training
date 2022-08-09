@@ -16,12 +16,12 @@
                   <p class="card-text">{{ movie.movie_name }} . . .</p>
                   <a class="btn btn-primary" href="{{ movie.movie_name }}">內容</a>
               </div> {% endcomment %}
-            <h2>{{ movie.movie_name }}</h2>
+            <h3>{{ movie.movie_name }}</h3>
             <img src="..{{ MEDIA_URL }}{{ movie.movie_poster }}" alt="Poster" height="400" width="280"/>
             <div class="mt-2">
               <p style="overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;line-height: 24px; height: 72px;">{{ movie.description }}</p>
             </div>
-            <p><a class="btn btn-secondary" href="get_movie_detail/{{ movie.id }}" role="button">View details »</a></p>
+            <div class="text-right mb-2"><a class="btn btn-secondary" href="get_movie_detail/{{ movie.id }}" role="button">View details »</a></div>
       </div>
       {% endfor %}
   </div>

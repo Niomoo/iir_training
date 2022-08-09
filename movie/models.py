@@ -19,7 +19,7 @@ class Movie(models.Model):
     movie_name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     published_year = models.IntegerField(('year'), choices=year_dropdown, default=datetime.datetime.now().year+1)
-    movie_poster = models.FileField(upload_to='img/', blank=True)
+    movie_poster = models.FileField(upload_to='img', blank=True)
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
